@@ -14,7 +14,7 @@ plugins:
 functions:
     api:
         handler: index.php
-        description: ''
+        description: 'QR Code Create Page API'
         runtime: php-84-fpm
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
         url: true

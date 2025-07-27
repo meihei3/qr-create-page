@@ -2,22 +2,22 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
+use App\Controllers\QrCodeController;
+use App\Views\ViewManager;
+use Slim\Factory\AppFactory;
 
-$loader = new FilesystemLoader(__DIR__ . '/templates');
-$twig = new Environment($loader);
+// Create Slim app
+$app = AppFactory::create();
 
-$qrCodeUrl = '';
-$submittedUrl = '';
+// Set up Views
+ViewManager::setup($app);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['url'])) {
-    $submittedUrl = $_POST['url'];
-    // A free QR code API
-    $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($submittedUrl);
-}
+// Create controller instance
+$qrCodeController = new QrCodeController();
 
-echo $twig->render('index.html.twig', [
-    'qrCodeUrl' => $qrCodeUrl,
-    'submittedUrl' => $submittedUrl,
-]);
+// Define routes
+$app->get('/', [$qrCodeController, 'index']);
+$app->post('/', [$qrCodeController, 'generate']);
+
+// Run the app
+$app->run();
