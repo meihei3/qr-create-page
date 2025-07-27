@@ -3,6 +3,7 @@
     "description": "QR Code Create Page",
     "type": "project",
     "require": {
-        "bref/bref": "^2.4"
+        "bref/bref": "^2.4",
+        "twig/twig": "^3.21"
     }
 }
