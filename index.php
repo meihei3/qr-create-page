@@ -1,25 +1,76 @@
 <?php
 
-// This is a PHP file example.
-// Replace it with your application.
+// QR Code Create Page - Hello World
 
-// Below is a welcome page written in HTML.
+$currentTime = date('Y年m月d日 H:i:s');
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Welcome!</title>
-    <link href="https://fonts.googleapis.com/css?family=Dosis:300&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Create Page - Hello World</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            margin: 2rem;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        .info {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        .time {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 2rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
-<body class="flex h-screen">
-    <div class="rounded-full mx-auto self-center relative" style="height: 400px; width: 400px; background: linear-gradient(123.19deg, #266488 3.98%, #258ECB 94.36%)">
-        <h1 class="font-light absolute w-full text-center text-blue-200" style="font-family: Dosis; font-size: 45px; top: 35%">Hello there,</h1>
-        <div class="w-full relative absolute" style="top: 60%; height: 50%">
-            <div class="absolute inset-x-0 bg-white" style="bottom: 0; height: 55%"></div>
-            <svg viewBox="0 0 1280 311" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0)"><path d="M1214 177L1110.5 215.5L943.295 108.5L807.5 168.5L666 66.5L581 116L517 49.5L288.5 184L163.5 148L-34.5 264.5V311H1317V258.5L1214 177Z" fill="white"/><path d="M1214 177L1110.5 215.5L943.295 108.5L807.5 168.5L666 66.5L581 116L517 49.5L288.5 184L163.5 148L-34.5 264.5L163.5 161L275 194L230.5 281.5L311 189L517 61L628 215.5L600 132.5L666 77L943.295 295L833 184L943.295 116L1172 275L1121 227L1214 189L1298 248L1317 258.5L1214 177Z" fill="#DCEFFA"/></g><defs><clipPath id="clip0"><rect width="1280" height="311" fill="white"/></clipPath></defs></svg>
+<body>
+    <div class="container">
+        <h1>🌍 Hello World!</h1>
+        <p class="subtitle">QR Code Create Page へようこそ</p>
+        
+        <div class="info">
+            <p><strong>🕐 現在時刻:</strong> <span class="time"><?php echo $currentTime; ?></span></p>
+            <p><strong>🌏 デプロイ先:</strong> AWS Lambda (東京リージョン)</p>
+            <p><strong>⚡ ランタイム:</strong> PHP 8.4 + Bref</p>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by Bref & Serverless Framework</p>
         </div>
     </div>
 </body>

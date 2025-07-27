@@ -1,4 +1,4 @@
-service: app
+service: qr-create-page
 
 # Set your team ID if you are using Bref Cloud
 #bref:
@@ -6,7 +6,7 @@ service: app
 
 provider:
     name: aws
-    region: us-east-1
+    region: ap-northeast-1  # Tokyo region
 
 plugins:
     - ./vendor/bref/bref
