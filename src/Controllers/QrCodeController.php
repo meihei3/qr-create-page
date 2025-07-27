@@ -9,17 +9,10 @@ use Slim\Views\Twig;
 
 class QrCodeController
 {
-    /**
-     * @var QrCodeModel
-     */
-    private $qrCodeModel;
 
-    /**
-     * QrCodeController constructor.
-     */
-    public function __construct()
-    {
-        $this->qrCodeModel = new QrCodeModel();
+    public function __construct(
+        private readonly QrCodeModel $qrCodeModel
+    ) {
     }
 
     /**

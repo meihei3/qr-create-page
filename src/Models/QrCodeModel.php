@@ -2,14 +2,22 @@
 
 namespace App\Models;
 
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class QrCodeModel
 {
+    /**
+     * QrCodeModel constructor.
+     */
+    public function __construct(
+        private HttpClientInterface $httpClient,
+    ) {
+    }
+
     /**
      * Generate a QR code for the given URL and return as a data URL
      *
@@ -26,11 +34,8 @@ class QrCodeModel
         $apiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($url);
 
         try {
-            // Create HTTP client
-            $httpClient = HttpClient::create();
-
             // Send request
-            $response = $httpClient->request('GET', $apiUrl);
+            $response = $this->httpClient->request('GET', $apiUrl);
 
             // Get content type from headers
             $headers = $response->getHeaders();
