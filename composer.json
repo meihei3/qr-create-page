@@ -1,0 +1,8 @@
+{
+    "name": "qr-create-page/app",
+    "description": "QR Code Create Page",
+    "type": "project",
+    "require": {
+        "bref/bref": "^2.4"
+    }
+}
