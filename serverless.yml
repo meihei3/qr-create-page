@@ -17,8 +17,7 @@ functions:
         description: ''
         runtime: php-84-fpm
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        events:
-            -   httpApi: '*'
+        url: true
 
 # Exclude files from deployment
 package:
