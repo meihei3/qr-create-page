@@ -1,8 +1,13 @@
 <?php
 
-// QR Code Create Page - Hello World
+$qrCodeUrl = '';
+$submittedUrl = '';
 
-$currentTime = date('Y年m月d日 H:i:s');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['url'])) {
+    $submittedUrl = $_POST['url'];
+    // A free QR code API
+    $qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($submittedUrl);
+}
 
 ?>
 <!DOCTYPE html>
@@ -10,46 +15,87 @@ $currentTime = date('Y年m月d日 H:i:s');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Create Page - Hello World</title>
+    <title>QR Code Generator</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
-            padding: 0;
+            padding: 2rem;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
         }
         .container {
             background: white;
-            padding: 3rem;
+            padding: 2rem 3rem;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             text-align: center;
             max-width: 500px;
-            margin: 2rem;
+            width: 100%;
         }
         h1 {
             color: #333;
-            margin-bottom: 1rem;
-            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
         }
         .subtitle {
             color: #666;
             font-size: 1.1rem;
             margin-bottom: 2rem;
         }
-        .info {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 10px;
-            margin: 1.5rem 0;
+        .form-container {
+            margin-bottom: 1.5rem;
         }
-        .time {
-            color: #007bff;
+        .url-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            margin-bottom: 1rem;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
             font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        .qr-code-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .qr-code-container h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        .qr-code-container img {
+            max-width: 100%;
+            height: auto;
+            border: 5px solid white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+        }
+        .qr-code-container p {
+            color: #666;
+            font-size: 0.9rem;
+            word-break: break-all;
         }
         .footer {
             margin-top: 2rem;
@@ -60,15 +106,24 @@ $currentTime = date('Y年m月d日 H:i:s');
 </head>
 <body>
     <div class="container">
-        <h1>🌍 Hello World!</h1>
-        <p class="subtitle">QR Code Create Page へようこそ</p>
-        
-        <div class="info">
-            <p><strong>🕐 現在時刻:</strong> <span class="time"><?php echo $currentTime; ?></span></p>
-            <p><strong>🌏 デプロイ先:</strong> AWS Lambda (東京リージョン)</p>
-            <p><strong>⚡ ランタイム:</strong> PHP 8.4 + Bref</p>
+        <h1>QR Code Generator</h1>
+        <p class="subtitle">Enter a URL to generate a QR code.</p>
+
+        <div class="form-container">
+            <form action="" method="POST">
+                <input type="url" name="url" class="url-input" placeholder="https://example.com" value="<?php echo htmlspecialchars($submittedUrl); ?>" required>
+                <button type="submit" class="submit-btn">Generate QR Code</button>
+            </form>
         </div>
-        
+
+        <?php if ($qrCodeUrl): ?>
+        <div class="qr-code-container">
+            <h2>Your QR Code</h2>
+            <img src="<?php echo htmlspecialchars($qrCodeUrl); ?>" alt="Generated QR Code">
+            <p>URL: <?php echo htmlspecialchars($submittedUrl); ?></p>
+        </div>
+        <?php endif; ?>
+
         <div class="footer">
             <p>Powered by Bref & Serverless Framework</p>
         </div>
