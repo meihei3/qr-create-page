@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Models\QrCodeModel;
+use App\Services\QrCodeServiceInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -11,7 +11,7 @@ class QrCodeController
 {
 
     public function __construct(
-        private readonly QrCodeModel $qrCodeModel
+        private readonly QrCodeServiceInterface $qrCodeService
     ) {
     }
 
@@ -35,7 +35,7 @@ class QrCodeController
         $params = (array)$request->getParsedBody();
 
         $submittedUrl = $params['url'] ?? '';
-        $qrCodeUrl = $this->qrCodeModel->generateQrCodeUrl($submittedUrl);
+        $qrCodeUrl = $this->qrCodeService->generateQrCodeUrl($submittedUrl);
 
         $view = Twig::fromRequest($request);
         return $view->render($response, 'index.html.twig', [

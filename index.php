@@ -3,7 +3,8 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Controllers\QrCodeController;
-use App\Models\QrCodeModel;
+use App\Services\QrCodeService;
+use App\Services\QrCodeServiceInterface;
 use App\Views\ViewManager;
 use DI\ContainerBuilder;
 use DI\Bridge\Slim\Bridge;
@@ -18,14 +19,14 @@ $containerBuilder->addDefinitions([
         return HttpClient::create();
     },
 
-    // Define QrCodeModel
-    QrCodeModel::class => function(HttpClientInterface $httpClient) {
-        return new QrCodeModel($httpClient);
+    // Define QrCodeService
+    QrCodeServiceInterface::class => function(HttpClientInterface $httpClient) {
+        return new QrCodeService($httpClient);
     },
 
     // Define QrCodeController
-    QrCodeController::class => function(QrCodeModel $qrCodeModel) {
-        return new QrCodeController($qrCodeModel);
+    QrCodeController::class => function(QrCodeServiceInterface $qrCodeService) {
+        return new QrCodeController($qrCodeService);
     }
 ]);
 
