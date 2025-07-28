@@ -2,19 +2,14 @@
 
 namespace App\Services;
 
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class QrCodeService implements QrCodeServiceInterface
 {
-    public function __construct(
-        private HttpClientInterface $httpClient,
-    ) {
-    }
-
     /**
      * Generate a QR code for the given URL and return as a data URL
      *
@@ -27,22 +22,23 @@ class QrCodeService implements QrCodeServiceInterface
             return '';
         }
 
-        $apiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($url);
-
         try {
-            $response = $this->httpClient->request('GET', $apiUrl);
+            $result = Builder::create()
+                ->writer(new PngWriter())
+                ->data($url)
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
+                ->size(200)
+                ->margin(10)
+                ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+                ->build();
 
-            $headers = $response->getHeaders();
-            $contentType = $headers['content-type'][0] ?? 'image/png';
-
-            $imageData = $response->getContent();
-
+            $imageData = $result->getString();
             $base64 = base64_encode($imageData);
 
-            return 'data:' . $contentType . ';base64,' . $base64;
+            return 'data:image/png;base64,' . $base64;
 
-        } catch (TransportExceptionInterface | ClientExceptionInterface | 
-                 RedirectionExceptionInterface | ServerExceptionInterface $e) {
+        } catch (\Exception $e) {
             return '';
         }
     }

@@ -20,8 +20,8 @@ $containerBuilder->addDefinitions([
     },
 
     // Define QrCodeService
-    QrCodeServiceInterface::class => function(HttpClientInterface $httpClient) {
-        return new QrCodeService($httpClient);
+    QrCodeServiceInterface::class => function() {
+        return new QrCodeService();
     },
 
     // Define QrCodeController
