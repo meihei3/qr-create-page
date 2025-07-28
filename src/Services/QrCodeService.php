@@ -23,16 +23,17 @@ class QrCodeService implements QrCodeServiceInterface
         }
 
         try {
-            $result = Builder::create()
-                ->writer(new PngWriter())
-                ->data($url)
-                ->encoding(new Encoding('UTF-8'))
-                ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
-                ->size(200)
-                ->margin(10)
-                ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-                ->build();
+            $builder = new Builder(
+                writer: new PngWriter(),
+                data: $url,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: ErrorCorrectionLevel::Medium,
+                size: 200,
+                margin: 10,
+                roundBlockSizeMode: RoundBlockSizeMode::Margin
+            );
 
+            $result = $builder->build();
             $imageData = $result->getString();
             $base64 = base64_encode($imageData);
 
