@@ -5,6 +5,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 use App\Controllers\QrCodeController;
 use App\Services\QrCodeService;
 use App\Services\QrCodeServiceInterface;
+use App\Services\FaviconService;
+use App\Services\FaviconServiceInterface;
 use App\Views\ViewManager;
 use DI\ContainerBuilder;
 use DI\Bridge\Slim\Bridge;
@@ -24,9 +26,14 @@ $containerBuilder->addDefinitions([
         return new QrCodeService();
     },
 
+    // Define FaviconService
+    FaviconServiceInterface::class => function() {
+        return new FaviconService();
+    },
+
     // Define QrCodeController
-    QrCodeController::class => function(QrCodeServiceInterface $qrCodeService) {
-        return new QrCodeController($qrCodeService);
+    QrCodeController::class => function(QrCodeServiceInterface $qrCodeService, FaviconServiceInterface $faviconService) {
+        return new QrCodeController($qrCodeService, $faviconService);
     }
 ]);
 

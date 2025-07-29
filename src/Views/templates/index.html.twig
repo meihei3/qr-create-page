@@ -72,13 +72,39 @@
             margin-top: 0;
             color: #333;
         }
+        .qr-code-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
         .qr-code-container img {
             max-width: 100%;
             height: auto;
             border: 5px solid white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            margin-bottom: 1rem;
+        }
+        .favicon-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            padding: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .favicon-overlay img {
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            box-shadow: none;
         }
         .qr-code-container p {
             color: #666;
@@ -107,7 +133,14 @@
         {% if qrCodeUrl %}
         <div class="qr-code-container">
             <h2>Your QR Code</h2>
-            <img src="{{ qrCodeUrl }}" alt="Generated QR Code">
+            <div class="qr-code-wrapper">
+                <img src="{{ qrCodeUrl }}" alt="Generated QR Code">
+                {% if faviconUrl %}
+                <div class="favicon-overlay">
+                    <img src="{{ faviconUrl }}" alt="Site favicon">
+                </div>
+                {% endif %}
+            </div>
             <p>URL: {{ submittedUrl }}</p>
         </div>
         {% endif %}

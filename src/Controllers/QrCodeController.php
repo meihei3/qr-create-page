@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Services\QrCodeServiceInterface;
+use App\Services\FaviconServiceInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -11,7 +12,8 @@ class QrCodeController
 {
 
     public function __construct(
-        private readonly QrCodeServiceInterface $qrCodeService
+        private readonly QrCodeServiceInterface $qrCodeService,
+        private readonly FaviconServiceInterface $faviconService
     ) {
     }
 
@@ -23,6 +25,7 @@ class QrCodeController
         $view = Twig::fromRequest($request);
         return $view->render($response, 'index.html.twig', [
             'qrCodeUrl' => '',
+            'faviconUrl' => '',
             'submittedUrl' => '',
         ]);
     }
@@ -36,10 +39,12 @@ class QrCodeController
 
         $submittedUrl = $queryParams['url'] ?? '';
         $qrCodeUrl = $this->qrCodeService->generateQrCodeUrl($submittedUrl);
+        $faviconUrl = $this->faviconService->getFaviconUrl($submittedUrl);
 
         $view = Twig::fromRequest($request);
         return $view->render($response, 'index.html.twig', [
             'qrCodeUrl' => $qrCodeUrl,
+            'faviconUrl' => $faviconUrl,
             'submittedUrl' => $submittedUrl,
         ]);
     }
