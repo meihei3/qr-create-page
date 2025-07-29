@@ -115,6 +115,16 @@
             color: #999;
             font-size: 0.8rem;
         }
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -123,6 +133,11 @@
         <p class="subtitle">Enter a URL to generate a QR code.</p>
 
         <div class="form-container">
+            {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %}
             <form action="/generate" method="GET">
                 <input type="url" name="url" class="url-input" placeholder="http://example.com" value="{{ submittedUrl }}" required>
                 <button type="submit" class="submit-btn">Generate QR Code</button>

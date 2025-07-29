@@ -7,6 +7,7 @@ use App\Services\QrCodeService;
 use App\Services\QrCodeServiceInterface;
 use App\Services\FaviconService;
 use App\Services\FaviconServiceInterface;
+use App\Services\UrlValidator;
 use App\Views\ViewManager;
 use DI\ContainerBuilder;
 use DI\Bridge\Slim\Bridge;
@@ -30,6 +31,16 @@ $containerBuilder->addDefinitions([
     FaviconServiceInterface::class => function() {
         return new FaviconService();
     },
+
+    // Define UrlValidator
+    UrlValidator::class => function() {
+        return new UrlValidator();
+    },
+
+    // Define QrCodeController
+    QrCodeController::class => function(QrCodeServiceInterface $qrCodeService, FaviconServiceInterface $faviconService, UrlValidator $urlValidator) {
+        return new QrCodeController($qrCodeService, $faviconService, $urlValidator);
+    }
 ]);
 
 // Build container

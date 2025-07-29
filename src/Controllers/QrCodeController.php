@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Services\QrCodeServiceInterface;
 use App\Services\FaviconServiceInterface;
+use App\Services\UrlValidator;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -13,7 +14,8 @@ class QrCodeController
 
     public function __construct(
         private readonly QrCodeServiceInterface $qrCodeService,
-        private readonly FaviconServiceInterface $faviconService
+        private readonly FaviconServiceInterface $faviconService,
+        private readonly UrlValidator $urlValidator
     ) {
     }
 
@@ -27,6 +29,7 @@ class QrCodeController
             'qrCodeUrl' => '',
             'faviconUrl' => '',
             'submittedUrl' => '',
+            'error' => '',
         ]);
     }
 
@@ -36,16 +39,33 @@ class QrCodeController
     public function generate(Request $request, Response $response): Response
     {
         $queryParams = $request->getQueryParams();
-
         $submittedUrl = $queryParams['url'] ?? '';
-        $qrCodeUrl = $this->qrCodeService->generateQrCodeUrl($submittedUrl);
-        $faviconUrl = $this->faviconService->getFaviconUrl($submittedUrl);
+
+        // Validate URL
+        $validation = $this->urlValidator->validate($submittedUrl);
+        
+        if (!$validation['valid']) {
+            $view = Twig::fromRequest($request);
+            return $view->render($response, 'index.html.twig', [
+                'qrCodeUrl' => '',
+                'faviconUrl' => '',
+                'submittedUrl' => $submittedUrl,
+                'error' => $validation['error'],
+            ]);
+        }
+
+        // Use normalized URL if available
+        $normalizedUrl = $validation['normalized_url'] ?? $submittedUrl;
+        
+        $qrCodeUrl = $this->qrCodeService->generateQrCodeUrl($normalizedUrl);
+        $faviconUrl = $this->faviconService->getFaviconUrl($normalizedUrl);
 
         $view = Twig::fromRequest($request);
         return $view->render($response, 'index.html.twig', [
             'qrCodeUrl' => $qrCodeUrl,
             'faviconUrl' => $faviconUrl,
-            'submittedUrl' => $submittedUrl,
+            'submittedUrl' => $normalizedUrl,
+            'error' => '',
         ]);
     }
 
