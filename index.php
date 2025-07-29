@@ -10,6 +10,7 @@ use App\Services\FaviconServiceInterface;
 use App\Services\UrlValidator;
 use App\Services\UrlValidatorInterface;
 use App\Views\ViewManager;
+use App\Middleware\HttpCacheMiddleware;
 use DI\ContainerBuilder;
 use DI\Bridge\Slim\Bridge;
 use Symfony\Component\HttpClient\HttpClient;
@@ -47,6 +48,9 @@ $app = Bridge::create($container);
 
 // Set up Views
 ViewManager::setup($app);
+
+// Add cache middleware
+$app->add(new HttpCacheMiddleware());
 
 // Define routes
 $app->get('/', [QrCodeController::class, 'index']);

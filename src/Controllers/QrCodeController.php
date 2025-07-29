@@ -80,7 +80,7 @@ class QrCodeController
         $base64Data = substr($qrCodeDataUrl, strpos($qrCodeDataUrl, ',') + 1);
         $svgContent = base64_decode($base64Data);
         
-        $response->getBody()->write($svgContent);
+$response->getBody()->write($svgContent);
         return $response->withHeader('Content-Type', 'image/svg+xml');
     }
 }
