@@ -6,7 +6,7 @@ use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\RoundBlockSizeMode;
-use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\Writer\Result\ResultInterface;
 
 class QrCodeService implements QrCodeServiceInterface
@@ -33,7 +33,7 @@ class QrCodeService implements QrCodeServiceInterface
     private function buildQrCode(string $data): ResultInterface
     {
         $builder = new Builder(
-            writer: new PngWriter(),
+            writer: new SvgWriter(),
             data: $data,
             encoding: new Encoding('UTF-8'),
             errorCorrectionLevel: ErrorCorrectionLevel::Medium,
@@ -48,6 +48,6 @@ class QrCodeService implements QrCodeServiceInterface
     private function convertToDataUrl(string $imageData): string
     {
         $base64 = base64_encode($imageData);
-        return 'data:image/png;base64,' . $base64;
+        return 'data:image/svg+xml;base64,' . $base64;
     }
 }
