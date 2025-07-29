@@ -26,39 +26,20 @@ A modern web-based QR code generator with favicon overlay functionality, built w
 
 ## Architecture
 
-```mermaid
-graph TB
-    subgraph "Frontend"
-        A[HTML/CSS/Twig<br/>Responsive UI]
-    end
-    
-    subgraph "Backend Services"
-        B[QrCodeController]
-        C[QrCodeService]
-        D[FaviconService]
-    end
-    
-    subgraph "External APIs"
-        E[Google Favicon API]
-    end
-    
-    subgraph "Infrastructure"
-        F[AWS Lambda<br/>(Bref Runtime)]
-    end
-    
-    A --> B
-    B --> C
-    B --> D
-    D --> E
-    B --> F
-    C --> F
-    
-    style A fill:#e1f5fe
-    style B fill:#f3e5f5
-    style C fill:#f3e5f5
-    style D fill:#f3e5f5
-    style E fill:#fff3e0
-    style F fill:#e8f5e8
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend        │    │   External      │
+│                 │    │                  │    │                 │
+│ HTML/CSS/Twig   │───▶│ QrCodeService    │    │ Google Favicon  │
+│ Responsive UI   │    │ FaviconService   │◀───│ API             │
+│                 │    │ QrCodeController │    │                 │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+                              │
+                              ▼
+                       ┌──────────────────┐
+                       │   AWS Lambda     │
+                       │   (Bref)         │
+                       └──────────────────┘
 ```
 
 ## Project Structure
