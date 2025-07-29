@@ -30,11 +30,6 @@ $containerBuilder->addDefinitions([
     FaviconServiceInterface::class => function() {
         return new FaviconService();
     },
-
-    // Define QrCodeController
-    QrCodeController::class => function(QrCodeServiceInterface $qrCodeService, FaviconServiceInterface $faviconService) {
-        return new QrCodeController($qrCodeService, $faviconService);
-    }
 ]);
 
 // Build container
