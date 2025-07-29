@@ -28,13 +28,13 @@ class QrCodeController
     }
 
     /**
-     * Generate QR code from submitted URL
+     * Generate QR code from URL query parameter
      */
     public function generate(Request $request, Response $response): Response
     {
-        $params = (array)$request->getParsedBody();
+        $queryParams = $request->getQueryParams();
 
-        $submittedUrl = $params['url'] ?? '';
+        $submittedUrl = $queryParams['url'] ?? '';
         $qrCodeUrl = $this->qrCodeService->generateQrCodeUrl($submittedUrl);
 
         $view = Twig::fromRequest($request);
@@ -42,5 +42,20 @@ class QrCodeController
             'qrCodeUrl' => $qrCodeUrl,
             'submittedUrl' => $submittedUrl,
         ]);
+    }
+
+    /**
+     * Return favicon as QR code for "favicon.ico" text
+     */
+    public function favicon(Request $request, Response $response): Response
+    {
+        $qrCodeDataUrl = $this->qrCodeService->generateQrCodeUrl('favicon.ico');
+        
+        // Extract base64 data from data URL
+        $base64Data = substr($qrCodeDataUrl, strpos($qrCodeDataUrl, ',') + 1);
+        $svgContent = base64_decode($base64Data);
+        
+        $response->getBody()->write($svgContent);
+        return $response->withHeader('Content-Type', 'image/svg+xml');
     }
 }

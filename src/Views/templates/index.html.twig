@@ -98,7 +98,7 @@
         <p class="subtitle">Enter a URL to generate a QR code.</p>
 
         <div class="form-container">
-            <form action="" method="POST">
+            <form action="/generate" method="GET">
                 <input type="url" name="url" class="url-input" placeholder="http://example.com" value="{{ submittedUrl }}" required>
                 <button type="submit" class="submit-btn">Generate QR Code</button>
             </form>

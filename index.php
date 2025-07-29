@@ -41,7 +41,8 @@ ViewManager::setup($app);
 
 // Define routes
 $app->get('/', [QrCodeController::class, 'index']);
-$app->post('/', [QrCodeController::class, 'generate']);
+$app->get('/generate', [QrCodeController::class, 'generate']);
+$app->get('/favicon.ico', [QrCodeController::class, 'favicon']);
 
 // Run the app
 $app->run();
