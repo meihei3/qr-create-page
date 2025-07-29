@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class UrlValidator
+class UrlValidator implements UrlValidatorInterface
 {
     private const MAX_URL_LENGTH = 2048;
     private const MIN_URL_LENGTH = 10;

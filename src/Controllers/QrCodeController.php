@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Services\QrCodeServiceInterface;
 use App\Services\FaviconServiceInterface;
-use App\Services\UrlValidator;
+use App\Services\UrlValidatorInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Views\Twig;
@@ -15,7 +15,7 @@ class QrCodeController
     public function __construct(
         private readonly QrCodeServiceInterface $qrCodeService,
         private readonly FaviconServiceInterface $faviconService,
-        private readonly UrlValidator $urlValidator
+        private readonly UrlValidatorInterface $urlValidator
     ) {
     }
 
