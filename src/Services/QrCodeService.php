@@ -36,7 +36,7 @@ class QrCodeService implements QrCodeServiceInterface
             writer: new SvgWriter(),
             data: $data,
             encoding: new Encoding('UTF-8'),
-            errorCorrectionLevel: ErrorCorrectionLevel::Medium,
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
             size: self::QR_CODE_SIZE,
             margin: self::QR_CODE_MARGIN,
             roundBlockSizeMode: RoundBlockSizeMode::Margin
